@@ -28,3 +28,4 @@ services:
       - DB_MYSQL_HOST=mysql-spring
     depends_on:
       - mysql-spring
+    restart: always

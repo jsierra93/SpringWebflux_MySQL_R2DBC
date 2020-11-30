@@ -34,11 +34,23 @@ public class DatabaseOperations {
                 .doOnNext(val -> LOGGER.info("doOnNext saveUser {}", val));
     }
 
-    public Mono<UserModels> updateUser(UserModels update) {
+    public Mono<UserModels> updateUserByUsername(UserModels update) {
         Mono<UserModels> result = usersRepository.findByUsername(update.getUsername())
                 .flatMap(user -> {
                     update.setId(user.getId());
                  return usersRepository.save(update);
+                })
+                .doOnNext(val -> LOGGER.info("doOnNext {}", val))
+                .doOnSuccess(x -> LOGGER.info("success {}", x));
+        return result;
+    }
+
+    public Mono<UserModels> updateUserById(UserModels update, String id) {
+        Long idUser = Long.valueOf(id);
+        Mono<UserModels> result = usersRepository.findById(idUser)
+                .flatMap(user -> {
+                    update.setId(user.getId());
+                    return usersRepository.save(update);
                 })
                 .doOnNext(val -> LOGGER.info("doOnNext {}", val))
                 .doOnSuccess(x -> LOGGER.info("success {}", x));

@@ -2,19 +2,14 @@ package co.com.jsierra.webfluxmysql.controllers;
 
 import co.com.jsierra.webfluxmysql.models.UserModels;
 import co.com.jsierra.webfluxmysql.services.DatabaseOperations;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.server.ServerRequest;
 import org.springframework.web.reactive.function.server.ServerResponse;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 @Component
 public class Handler {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(Handler.class);
 
     @Autowired
     DatabaseOperations databaseOperations;
@@ -42,10 +37,20 @@ public class Handler {
                 .body(newUser, UserModels.class);
     }
 
-    public Mono<ServerResponse> updateUser(ServerRequest serverRequest) {
+    public Mono<ServerResponse> updateUserById(ServerRequest serverRequest) {
         Mono<UserModels> updateUser = serverRequest.bodyToMono(UserModels.class)
                 .flatMap(user ->
-                        databaseOperations.updateUser(user)
+                        databaseOperations.updateUserById(user, serverRequest.pathVariable("id"))
+                );
+
+        return ServerResponse.ok()
+                .body(updateUser, UserModels.class);
+    }
+
+    public Mono<ServerResponse> updateUserByUsername(ServerRequest serverRequest) {
+        Mono<UserModels> updateUser = serverRequest.bodyToMono(UserModels.class)
+                .flatMap(user ->
+                        databaseOperations.updateUserByUsername(user)
                 );
 
         return ServerResponse.ok()
