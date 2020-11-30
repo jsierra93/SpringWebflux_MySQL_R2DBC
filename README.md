@@ -21,6 +21,7 @@ Microservicio reactivo desarrollado en Spring Webflux realizando conexión a una
    - GET http://localhost:8083/v1/users/{id}
    - POST http://localhost:8083/v1/users
    - PUT http://localhost:8083/v1/users/{id}
+   - PUT http://localhost:8083/v1/users
    - DELETE http://localhost:8083/v1/users/{id}
    
    
