@@ -1,0 +1,30 @@
+version: "3.7"
+services:
+  mysql-spring:
+    image: mysql:latest
+    container_name: 'mysql-spring'
+    volumes:
+      - "./.mysql-data/db:/var/lib/mysql"
+    restart: always
+    ports:
+      - 3306:3306
+    environment:
+      MYSQL_ROOT_PASSWORD: dev1234
+      MYSQL_DATABASE: mysql_database
+      MYSQL_USER: dev1234
+      MYSQL_PASSWORD: dev1234
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+    - 8083:8083
+    environment:
+      - DB_MYSQL_PORT=3306
+      - DB_MYSQL_USERNAME=dev1234
+      - DB_MYSQL_PASSWORD=dev1234
+      - DB_MYSQL_DATABASE=mysql_database
+      - DB_MYSQL_HOST=mysql-spring
+    depends_on:
+      - mysql-spring

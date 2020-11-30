@@ -1,0 +1,27 @@
+server:
+  port: 8083
+spring:
+  application:
+    name: webflux-mysql-r2dbc
+management:
+  health:
+    diskspace:
+      enabled: false
+    ping:
+      enabled: false
+  endpoint:
+    health:
+      show-details: always
+db:
+  mysql:
+    host: 127.0.0.1
+    port: 3306
+    username: dev1234
+    password: dev1234
+    database: mysql_database
+logging:
+  level:
+    org:
+      springframework:
+        data:
+          r2dbc: DEBUG
